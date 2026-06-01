@@ -1,17 +1,26 @@
 import jwt from "jsonwebtoken";
 
+const JWT_ACCESS_SECRET =
+  process.env.JWT_ACCESS_SECRET ||
+  "test-access-secret";
+
+const JWT_REFRESH_SECRET =
+  process.env.JWT_REFRESH_SECRET ||
+  "test-refresh-secret";
+
 export const generateAccessToken = (
   userId: string,
   role: string,
   organizationId?: string
 ) => {
+
   return jwt.sign(
     {
       userId,
       role,
       organizationId
     },
-    process.env.JWT_ACCESS_SECRET as string,
+    JWT_ACCESS_SECRET,
     {
       expiresIn: "7d"
     }
@@ -21,11 +30,12 @@ export const generateAccessToken = (
 export const generateRefreshToken = (
   userId: string
 ) => {
+
   return jwt.sign(
     {
       userId
     },
-    process.env.JWT_REFRESH_SECRET as string,
+    JWT_REFRESH_SECRET,
     {
       expiresIn: "7d"
     }
@@ -35,17 +45,19 @@ export const generateRefreshToken = (
 export const verifyAccessToken = (
   token: string
 ) => {
+
   return jwt.verify(
     token,
-    process.env.JWT_ACCESS_SECRET as string
+    JWT_ACCESS_SECRET
   );
 };
 
 export const verifyRefreshToken = (
   token: string
 ) => {
+
   return jwt.verify(
     token,
-    process.env.JWT_REFRESH_SECRET as string
+    JWT_REFRESH_SECRET
   );
 };
