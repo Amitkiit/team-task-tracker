@@ -1,0 +1,33 @@
+version: "3.9"
+
+services:
+
+  backend:
+    build: ./backend
+    container_name: team-task-backend
+    restart: always
+
+    ports:
+      - "5000:5000"
+
+    env_file:
+      - ./backend/.env
+
+  frontend:
+    build: ./frontend
+    container_name: team-task-frontend
+    restart: always
+
+    ports:
+      - "4173:4173"
+
+    depends_on:
+      - backend
+
+  redis:
+    image: redis:7
+
+    container_name: redis
+
+    ports:
+      - "6379:6379"
